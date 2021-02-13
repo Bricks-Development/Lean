@@ -37,7 +37,6 @@ using NodaTime;
 using QuantConnect.IBAutomater;
 using QuantConnect.Orders.Fees;
 using QuantConnect.Orders.TimeInForces;
-using QuantConnect.Securities.Future;
 using QuantConnect.Securities.FutureOption;
 using QuantConnect.Securities.Option;
 using Bar = QuantConnect.Data.Market.Bar;
@@ -2924,19 +2923,12 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
         }
 
         /// <summary>
-        /// Returns whether the time can be advanced or not.
+        /// Returns whether selection can take place or not.
         /// </summary>
-        /// <param name="securityType">The security type</param>
-        /// <returns>true if the time can be advanced</returns>
-        public bool CanAdvanceTime(SecurityType securityType)
+        /// <returns>True if selection can take place</returns>
+        public bool CanPerformSelection()
         {
-            if (securityType == SecurityType.Future)
-            {
-                // we need to call the IB API only for futures
-                return !_ibAutomater.IsWithinScheduledServerResetTimes() && IsConnected;
-            }
-
-            return true;
+            return !_ibAutomater.IsWithinScheduledServerResetTimes() && IsConnected;
         }
 
         /// <summary>
